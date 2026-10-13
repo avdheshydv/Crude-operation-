@@ -1,0 +1,58 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details | Quora</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/read" class="logo">Quora</a>
+    <div class="nav-links">
+        <a href="/read">⌂ Home</a>
+        <a href="/post/new">＋ Create</a>
+    </div>
+</nav>
+
+<main class="container">
+    <a href="/read" class="back-link">← Back to Posts</a>
+
+    <% if (post) { %>
+        <article class="post">
+            <h3 class="user">👤 <%= post.username %></h3>
+
+            <p class="content"><%= post.content %></p>
+
+            <div class="actions">
+                <a href="/read/<%= post.id %>/edit"
+                   class="btn btn-outline">✎ Edit Post</a>
+
+                <form action="/read/<%= post.id %>?_method=DELETE"
+                      method="POST"
+                      class="inline-form"
+                      onsubmit="return confirm('Delete this post?')">
+                    <button class="btn btn-danger" type="submit">
+                        Delete Post
+                    </button>
+                </form>
+            </div>
+
+            <hr style="margin:24px 0; border:0; border-top:1px solid #e5e9f0">
+
+            <p class="post-meta">Post ID</p>
+            <p style="overflow-wrap:anywhere"><%= post.id %></p>
+        </article>
+    <% } else { %>
+        <section class="empty-state">
+            <h2>Post not found</h2>
+            <a href="/read" class="btn btn-primary">Back Home</a>
+        </section>
+    <% } %>
+</main>
+
+</body>
+</html>

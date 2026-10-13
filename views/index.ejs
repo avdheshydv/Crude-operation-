@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quora Clone | Home</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/read" class="logo">Quora</a>
+
+    <div class="nav-links">
+        <a href="/read">⌂ Home</a>
+        <a href="/post/new">＋ Create</a>
+    </div>
+
+    <input
+        type="search"
+        id="searchInput"
+        class="search-box"
+        placeholder="Search posts..."
+        aria-label="Search posts"
+    >
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>Welcome to Quora</h1>
+        <p>Ask questions, share your thoughts, and connect with people.</p>
+        <a href="/post/new" class="btn btn-primary">＋ Create Post</a>
+    </section>
+
+    <div class="section-heading">
+        <h2>Recent Posts</h2>
+        <span class="post-meta"><%= posts.length %> posts</span>
+    </div>
+
+    <div id="postsContainer">
+        <% for (let post of posts) { %>
+            <article class="post searchable-post">
+                <h3 class="user">
+                    👤 <%= post.username %>
+                </h3>
+
+                <p class="content"><%= post.content %></p>
+
+                <div class="actions">
+                    <a class="btn btn-outline"
+                       href="/read/<%= post.id %>">
+                        View Details →
+                    </a>
+
+                    <a class="btn btn-outline"
+                       href="/read/<%= post.id %>/edit">
+                        ✎ Edit
+                    </a>
+
+                    <form class="inline-form delete-form"
+                          action="/read/<%= post.id %>?_method=DELETE"
+                          method="POST">
+                        <button class="btn btn-danger" type="submit">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </article>
+        <% } %>
+    </div>
+
+    
+    <% if (posts.length === 0) { %>
+    <div id="emptyState" class="empty-state">
+        <h3>No posts yet</h3>
+        <p>Be the first person to share something with the community.</p>
+        <a href="/post/new" class="btn btn-primary">
+            Create your first post
+        </a>
+    </div>
+<% } %>
+
+    <p id="noResults" class="empty-state" style="display:none">
+        No matching posts found. Try another search.
+    </p>
+
+</main>
+
+<footer class="footer">
+    Made with ❤️ using Node.js, Express and EJS
+</footer>
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const postCards = document.querySelectorAll(".searchable-post");
+    const noResults = document.getElementById("noResults");
+    const emptyState = document.getElementById("emptyState");
+
+    searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        postCards.forEach(function (card) {
+            const matches = card.textContent.toLowerCase().includes(query);
+            card.style.display = matches ? "" : "none";
+
+            if (matches) visibleCount++;
+        });
+
+        noResults.style.display =
+            postCards.length > 0 && visibleCount === 0 ? "block" : "none";
+
+        if (postCards.length > 0 && visibleCount > 0) {
+            emptyState.style.display = "none";
+        } else if (postCards.length > 0) {
+            emptyState.style.display = "none";
+        }
+    });
+
+    document.querySelectorAll(".delete-form").forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+            if (!confirm("Are you sure you want to delete this post?")) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

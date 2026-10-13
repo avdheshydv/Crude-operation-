@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post | Quora</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/read" class="logo">Quora</a>
+    <div class="nav-links">
+        <a href="/read">⌂ Home</a>
+    </div>
+</nav>
+
+<main class="container">
+    <a href="/read" class="back-link">← Back to Posts</a>
+
+    <% if (post) { %>
+        <section class="form-card">
+            <h1>Edit Your Post</h1>
+            <p class="subtitle">Update your content below.</p>
+
+            <p class="post-meta">Author: <%= post.username %></p>
+
+            <form action="/read/<%= post.id %>?_method=PATCH"
+                  method="POST">
+
+                <div class="form-group">
+                    <label for="content">Post content</label>
+                    <textarea
+                        id="content"
+                        name="content"
+                        maxlength="2000"
+                        required
+                    ><%= post.content %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary full-width">
+                    Save Changes
+                </button>
+            </form>
+        </section>
+    <% } else { %>
+        <section class="empty-state">
+            <h2>Post not found</h2>
+            <a href="/read" class="btn btn-primary">Back Home</a>
+        </section>
+    <% } %>
+</main>
+
+</body>
+</html>
+
